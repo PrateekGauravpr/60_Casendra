@@ -1,4 +1,5 @@
 {
+  "engines": {"node": "23.7.0"},
   "name": "60_casendra",
   "version": "1.0.0",
   "main": "index.js",
