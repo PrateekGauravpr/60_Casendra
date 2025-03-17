@@ -1,0 +1,72 @@
+ /* Sticky Navbar */
+ .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* Ensure the navbar stays above other content */
+    background-color: #f8f9fa; /* Light background color */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Navbar background color on scroll */
+.navbar.sticky {
+    background-color: #343a40; /* Dark background when sticky */
+    color: #fff;
+}
+
+/* Custom Navbar Logo */
+.navbar .fa-robot {
+    margin-right: 10px;
+}
+
+/* Navbar brand and items */
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #495057; /* Dark color for brand */
+}
+
+/* Navbar links */
+.navbar-nav .nav-item .nav-link {
+    color: #495057;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+/* Navbar link active state */
+.navbar-nav .nav-item .nav-link.active {
+    color: #28a745; /* Green color for active link */
+}
+
+/* Hover effect on links */
+.navbar-nav .nav-item .nav-link:hover {
+    color: #007bff; /* Blue color on hover */
+}
+
+/* Search form */
+.navbar form .form-control {
+    width: 200px;
+    border-radius: 20px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.navbar form .btn {
+    border-radius: 20px;
+    margin-left: 5px;
+}
+
+.navbar form .btn-outline-success {
+    border: 1px solid #28a745;
+    color: #28a745;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar form .btn-outline-success:hover {
+    background-color: #28a745;
+    color: #fff;
+}
+
+/* Toggler icon */
+.navbar-toggler-icon {
+    background-color: #343a40;
+}

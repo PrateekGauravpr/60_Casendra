@@ -1,0 +1,153 @@
+<% layout("layout22/boilerplate.ejs") %>
+<br><br>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h6>Add items to your weekly list</h6>
+            
+            <!-- Input and Button -->
+            <div class="input-group">
+                <input id="1243" type="number" placeholder="No of Items to add" value="" min="1" class="form-input"> 
+                <button id="1234" class="btn btn-success" type="button">Add Items</button>
+            </div>
+
+            <script>
+                // Wait until DOM is fully loaded
+                document.addEventListener('DOMContentLoaded', () => {
+                    let btn = document.getElementById('1234');
+                    let tableBody = document.querySelector('tbody');
+                    let inputField = document.getElementById("1243");
+
+                    btn.addEventListener('click', () => {
+                        let range_value = parseInt(inputField.value);
+
+                  
+                        // Clear any existing rows before adding new ones
+                        tableBody.innerHTML = "";
+
+                        if (!isNaN(range_value) && range_value > 0) {
+                            // Create rows based on the number entered
+                            for (let i = 0; i < range_value; i++) {
+                                let row = document.createElement("tr");
+
+                                row.innerHTML = `
+                                    <td><input type="text" name="item_name[]" class="form-input"></td>
+                                    <td><input type="date" name="schedule_on[]" class="form-input"></td>
+                                    <td><input type="text" name="category[]" class="form-input"></td>
+                                `;
+
+                                tableBody.appendChild(row);
+                            }
+                        } else {
+                            alert("Please enter a valid number");
+                        }
+                     });
+                });
+            </script>
+        </div>
+        
+        <!-- Form for submitting items -->
+        <form method="post" action="/table_data">
+            <!-- Table structure -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Schedule On</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be dynamically added here -->
+                </tbody>
+            </table>
+
+            <!-- Submit button -->
+            <div class="submit-container">
+                <button type="submit" class="btn btn-primary">Submit Items</button>
+            </div>
+        </form>
+    </div>
+    
+    
+    <!-- Styles for the page -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .form-container {
+            margin-bottom: 20px;
+        }
+        h6 {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .input-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        .form-input {
+            padding: 8px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 80%;
+            margin-right: 10px;
+        }
+        .btn {
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        .submit-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+    </style>
+</body>

@@ -1,0 +1,110 @@
+<% layout("layout22/boilerplate.ejs") -%>
+
+<body>
+    <div class="container mt-5">
+        <!-- Centered content -->
+        <div class="task-card mx-auto p-4 shadow-lg rounded">
+            <h4 class="text-center text-primary mb-4">Task Details</h4>
+            
+            <!-- Task Information -->
+            <div class="task-info mb-4">
+                <h4><strong>Task Name:</strong> <%= close_data.Task_Name %></h4>
+                <h4><strong>Description:</strong> <%= close_data.Description %></h4>
+
+                <!-- Format Created At to Show Only Date (Day, Month, Year) -->
+                <%
+                    let createdAtDate = new Date(close_data.Created_at);
+                    let formattedDate = createdAtDate.toLocaleDateString('en-US', {
+                        weekday: 'short', // Day of the week (Mon, Tue, etc.)
+                        year: 'numeric',
+                        month: 'short',  // Short month (Jan, Feb, etc.)
+                        day: 'numeric'
+                    });
+                %>
+
+                <h4><strong>Created At:</strong> <%= formattedDate %></h4>
+            </div>
+            
+            <!-- Closure Comment Form -->
+            <div class="comment-form">
+                <h4><strong>Closure Comment:</strong></h4>
+                <form action="/comment/<%= close_data._id %>" method="post">
+                    <textarea name="comment" class="form-control mb-3" placeholder="Enter your closure comment here..." rows="9" cols="52"></textarea>
+                    <button type="submit" class="btn btn-primary btn-block">Submit Comment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+<!-- Add Custom CSS Styling -->
+<style>
+    /* Centering the task-card container */
+    .task-card {
+        max-width: 600px; /* Width of the card */
+        background-color: #f4efef;
+        border-radius: 8px; 
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Task Name and Description */
+    .task-info h3, .task-info h4, .task-info h5 {
+        color: #333;
+    }
+
+    .task-info h3 {
+        font-size: 1.8em;
+        color: #777;
+    }
+
+    .task-info h4 {
+        font-size: 1.4em;
+        color: #777;
+    }
+
+    .task-info h5 {
+        font-size: 1.2em;
+        color: #777;
+    }
+
+    /* Styling for the closure comment form */
+    .comment-form {
+        margin-top: 20px;
+        color: #777;
+    }
+
+    .form-control {
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        box-shadow: none;
+    }
+
+    .form-control:focus {
+        border-color: #5cb85c;
+        box-shadow: 0 0 5px rgba(92, 184, 92, 0.5);
+    }
+
+    button {
+        background-color: #007bff;
+        border: none;
+        color: #fff;
+        font-size: 16px;
+        padding: 12px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    /* Optional styling for the page */
+    body {
+        background-color: #f5f5f5;
+        font-family: 'Arial', sans-serif;
+    }
+
+    h1, h4 {
+        font-family: 'Segoe UI', sans-serif;
+    }
+</style>

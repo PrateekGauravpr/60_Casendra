@@ -1,0 +1,79 @@
+.text_header {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .task-table {
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+  }
+
+  .task-table th,
+  .task-table td {
+    text-align: center;
+    padding: 12px;
+  }
+
+  .task-table th {
+    background-color: #343a40;
+    color: white;
+    font-weight: bold;
+  }
+
+  .task-table tbody tr:hover {
+    background-color: #f8f9fa;
+    cursor: pointer;
+  }
+
+  /* Action Buttons Styling */
+  .action-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Button Styling */
+  .btn {
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-success {
+    background-color: #28a745;
+    border: none;
+  }
+
+  .btn-success:hover {
+    background-color: #218838;
+  }
+
+  .btn-warning {
+    background-color: #ffc107;
+    border: none;
+  }
+
+  .btn-warning:hover {
+    background-color: #e0a800;
+  }
+
+  .btn-danger {
+    background-color: #dc3545;
+    border: none;
+  }
+
+  .btn-danger:hover {
+    background-color: #c82333;
+  }
+
+  /* Ensure proper spacing and alignment */
+  form {
+    display: inline-block;
+    margin-right: 5px; /* Spacing between buttons */
+  }

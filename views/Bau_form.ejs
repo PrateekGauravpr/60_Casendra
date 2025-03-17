@@ -1,0 +1,157 @@
+<%- layout("layout22/boilerplate.ejs") %>
+
+<body>
+    <div class="form-container">
+        <form method="post" action="/OneTime">
+            <!-- Task Name -->
+            <div class="form-group">
+                <h5>Task Name</h5>
+                <input type="text" name="Task_Name" placeholder="Enter Task Name" class="form-input">
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+                <h5>Description</h5>
+                <textarea name="Description" cols="40" rows="5" placeholder="Describe your Task" class="form-input"></textarea>
+            </div>
+
+            <!-- Recuring Date -->
+            <div class="form-group">
+                <h5>Due Date</h5>
+                <input type="date" name="TAT" class="form-input">
+            </div>
+
+            <!-- Duration -->
+            <div class="form-group">
+                <h5>Duration</h5>
+                <select name="duration" id="durationSelect" onchange="toggleDurationInput()" class="form-input">
+                    <option value="onetime">OneTime</option>
+                    <option value="repeat">Repeat</option>
+                </select>
+
+                <!-- Duration in months input, hidden by default -->
+                <br>
+                <div id="durationInputContainer" style="display: none;">
+                    
+                    <input type="number" placeholder="Enter duration in months" name="duration_months" class="form-input">
+                </div>
+            </div>
+            <button btn btn-success> Add Task </button>
+        </form>
+    </div>
+
+    <script>
+        // JavaScript to toggle visibility of the duration_months input field
+        function toggleDurationInput() {
+            var selectElement = document.getElementById('durationSelect');
+            var durationInputContainer = document.getElementById('durationInputContainer');
+            
+            // Show or hide duration input based on selected value
+            if (selectElement.value === 'repeat') {
+                durationInputContainer.style.display = 'block';
+            } else {
+                durationInputContainer.style.display = 'none';
+            }
+        }
+
+        // Call the function on page load to ensure initial visibility is correct
+        window.onload = function() {
+            toggleDurationInput();
+        };
+    </script>
+
+    <!-- Add CSS for styling -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group h5 {
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .form-group h6 {
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            border-color: #5cb85c;
+            outline: none;
+        }
+
+        select.form-input {
+            cursor: pointer;
+        }
+
+        input[type="date"] {
+            font-size: 14px;
+            padding: 8px;
+            width: 100%;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+        }
+
+        textarea.form-input {
+            font-size: 14px;
+            resize: vertical;
+        }
+
+        h5, h6 {
+            color: #555;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Optional: Responsive adjustments */
+        @media (max-width: 600px) {
+            .form-container {
+                margin: 20px;
+                padding: 15px;
+            }
+        }
+    </style>
+</body>

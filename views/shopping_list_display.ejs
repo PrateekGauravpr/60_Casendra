@@ -1,0 +1,169 @@
+<% layout("layout22/boilerplate.ejs") -%>
+<br>
+<style>
+  /* Container for the task statistics box */
+  .Home_box1 {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    padding-top: 40px;
+    border: 2px solid blanchedalmond;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1), -5px -5px 15px rgba(255, 255, 255, 0.3);
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 20px;  
+    text-decoration: none;
+  }
+
+  .Home_box1 div {
+    text-align: center;
+    width: 150px;
+    margin: 10px;
+    transition: transform 0.3s ease-in-out;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-decoration: none;
+  }
+
+  .Home_box1 div:hover {
+    transform: translateY(-5px);
+  }
+
+  .Home_box1 h6 {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8), -1px -1px 2px rgba(0, 0, 0, 0.2);
+    margin: 5px 0;
+    text-decoration: none;
+  }
+
+  .fa-solid {
+    font-size: 28px;
+    display: block;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 50%;
+    background-color: #fff;
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1), inset -2px -2px 5px rgba(255, 255, 255, 0.7);
+    transition: transform 0.3s ease;
+    text-decoration: none;
+  }
+
+  .fa-solid:hover {
+    transform: scale(1.1);
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), inset -2px -2px 5px rgba(255, 255, 255, 0.5);
+    text-decoration: none !important;
+  }
+
+  .task-table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+  }
+
+  .task-table th, .task-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+
+  .task-table thead {
+    background-color: #f8f9fa;
+  }
+
+  .task-table th {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+  }
+
+  .task-table tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+
+  .action-buttons form {
+    display: inline-block;
+    margin-left: 5px;
+  }
+
+  .action-buttons button {
+    margin: 5px;
+  }
+
+  .text_header {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  .Icon{
+    text-decoration: none;
+  }
+
+</style>
+
+<body>
+  <!-- Task Statistics Section -->
+  <div class="Home_box1">
+    <div>
+        <a class="Icon" href="/home">
+      <h6> Open Task </h6>
+      <i class="fa-solid fa-list-check"></i>
+    </a>
+    </div>
+
+    <div>
+        <a class="Icon" href="/task/today">
+      <h6>Pending for today</h6>
+      <i class="fa-solid fa-calendar-week"></i></a>
+    </div>
+
+    <div>
+       <h6>Pending with Others</h6>
+      <i class="fa-solid fa-person-walking-luggage"></i></>
+    </div>
+
+    <div>
+        <a class="Icon" href="/All_closed">
+      <h6>All Closed Task</h6>
+      <i class="fa-solid fa-thumbs-up"></i></a>
+    </div>
+
+    <div>
+      <h6 class="Icon" >Personal Task</h6>
+      <i class="fa-solid fa-paw"></i>
+    </div>
+
+    <div>
+     <a style="text-decoration: none;" href="/show_list"> <h6 class="Icon" >Shopping List</h6>
+      <i class="fa-solid fa-user-tie"></i></a>
+    </div>
+  </div>
+  <br>
+
+ 
+ 
+
+  <!-- Check if 'data' is empty before rendering the shopping list -->
+  <% if (data.length === 0) { %>
+   <h1>Nothing to Shop </h1>
+  <% } else { %>
+    <div style="display: flex; flex-wrap: wrap;">
+      <% for (let datas of data) { %>
+        <div class="card text-center mb-3" style="width: 18rem; display: flex; border-radius: 40px; margin: 10px;">
+          <a href="/sholis/<%= datas._id %>">
+            <div class="card-body">
+            
+              <a style="text-decoration: none; background-color: rgb(136, 198, 234);" href="/sholis/<%= datas._id %>" class="btn btn-primary"><%= datas._id %></a>
+            </div>
+          </a>
+        </div>
+      <% } %>
+    </div>
+  <% } %>
+</body>
+</html>

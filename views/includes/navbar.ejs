@@ -1,0 +1,56 @@
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary cust fixed-top">
+      <div class="container-fluid">
+          <!-- Logo Icon -->
+          <a href="/home">
+            <i style="color: rgb(84, 84, 126);" class="fa-solid fa-robot fa-2x"></i>
+          </a>
+
+          <!-- Navbar Brand -->
+          <a class="navbar-brand" href="/home">Home</a>
+
+          <!-- Toggler Button for Mobile -->
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <!-- Navbar Links -->
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="/task">Add Task</a>
+                  </li>
+
+                  <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Add BAU task</a>
+                      <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="/bulk">One at a time</a></li>
+                          <li><a class="dropdown-item" href="/bulkupload">Bulk Upload</a></li>
+                      </ul>
+                  </li>
+              </ul>
+
+              <!-- Login Link (Visible if not logged in) -->
+              <% if (!userinfo) { %>
+                  <div style="display: inline-block; margin-top: 20px;">
+                      <a class="navbar-brand" href="/" style="color: #007bff; font-weight: bold;">Login</a>
+                  </div>
+              <% } %>
+
+              <!-- Shopping List Button -->
+              <div style="display: inline-block; margin-left: 20px; margin-top: 20px;">
+                  <button style="background-color: #FFCAB1; padding: 10px 20px; border-radius: 50%; border: none; cursor: pointer; transition: background-color 0.3s ease;">
+                      <a class="nav-link active" aria-current="page" href="/shooping" style="text-decoration: none; color: black; font-size: 16px;">Shopping List</a>
+                  </button>
+              </div>
+
+              <!-- Logout Link (Visible if logged in) -->
+              <% if (userinfo) { %>
+                  <a href="/logout" style="color: rgb(244, 3, 3); font-size: 20px; margin-left: 20px; cursor: pointer; text-decoration: none;">
+                      <i class="fa-solid fa-power-off"></i>
+                  </a>
+              <% } %>
+          </div>
+      </div>
+  </nav>
+</body>
