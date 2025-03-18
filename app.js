@@ -76,9 +76,10 @@ app.use(express.urlencoded({ extended: true }));  // No need for body-parser
 // Connect to MongoDB
 async function main() {
   try {
-    await mongoose.connect('mongodb+srv://prateekgauravpr:VdIN6w1ND2CABhGy@cluster0.bhhdg.mongodb.net/', {
+    await mongoose.connect('mongodb+srv://prateekgauravpr:VdIN6w1ND2CABhGy@cluster0.bhhdg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
       useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 30000
     });
     console.log("Connected to MongoDB");
   } catch (err) {
