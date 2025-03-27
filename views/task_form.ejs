@@ -1,70 +1,186 @@
 <%- layout("layout22/boilerplate.ejs") -%>
 
 <style> 
-.manual{ padding-left: 450px;
-    width: 2700px;
-    height: 700px;
+    body {
+        background-color: #f4f7fc;
+        font-family: 'Poppins', sans-serif;
+    }
 
-}
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
 
+    .task-form {
+        background: #ffffff;
+        padding: 35px;
+        border-radius: 12px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+        max-width: 600px;
+        width: 100%;
+    }
 
+    h3 {
+        font-weight: 700;
+        text-align: center;
+        color: #333;
+    }
+
+    h4 {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #444;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        transition: all 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+    }
+
+    .assigned-to {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .btn-submit {
+        background: #007bff;
+        border: none;
+        padding: 12px;
+        width: 100%;
+        border-radius: 8px;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+    .btn-submit:hover {
+        background: #0056b3;
+    }
+
+    /* 🔹 Custom Radio Button Styling */
+    .form-check-input {
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #007bff;
+        border-radius: 50%;
+        display: inline-block;
+        position: relative;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+    }
+
+    /* Checked state */
+    .form-check-input:checked {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    /* Inner circle when selected */
+    .form-check-input:checked::before {
+        content: "";
+        width: 10px;
+        height: 10px;
+        background: white;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    /* Label Styling */
+    .form-check-label {
+        font-size: 16px;
+        font-weight: 500;
+        color: #444;
+        margin-left: 8px;
+        cursor: pointer;
+    }
+
+    /* Hover Effect */
+    .form-check:hover {
+        background: #f1f5ff;
+        border-radius: 8px;
+        transition: background 0.3s;
+    }
 </style>
 
-<body class="bg-light">
+<body>
 
-    <div class="container mt-5 " >
-        <h3 class="text-center mb-4">Add Your Task</h3>
-<div class="manual">
-        <form method="post" action="/task" class="p-4 border rounded shadow-sm  cont">
-            <!-- Task Name -->
-            <div class="mb-3">
-                <h4>Task Name</h4>
-                <input type="text" placeholder="Task Name" name="Tname" class="form-control" required>
-            </div>
-
-            <!-- Task Description -->
-            <div class="mb-3">
-                <h4>Description</h4>
-                <textarea name="Tdesc" cols="30" rows="5" placeholder="Describe the task" class="form-control" required></textarea>
-            </div>
-
-            <!-- Task Priority -->
-            <div class="mb-3 form-check">
-                <input type="checkbox" name="Priority0" class="form-check-input" id="priorityCheck">
-                <label class="form-check-label" for="priorityCheck">High Priority</label>
-            </div>
-
-            <!-- Task Type -->
-            <div class="mb-3">
-                <h4>Select Task Type</h4>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="Personal" id="personalTask">
-                    <label class="form-check-label" for="personalTask">Personal</label>
+    <div class="container">
+        <div class="task-form">
+            <h3>Add Your Task</h3>
+            
+            <form method="post" action="/task">
+                <!-- Task Name -->
+                <div class="mb-3">
+                    <h4>Task Name</h4>
+                    <input type="text" placeholder="Enter Task Name" name="Tname" class="form-control" required>
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="Official" id="officialTask">
-                    <label class="form-check-label" for="officialTask">Official</label>
+
+                <!-- Task Description -->
+                <div class="mb-3">
+                    <h4>Description</h4>
+                    <textarea name="Tdesc" placeholder="Describe the task" class="form-control" required></textarea>
                 </div>
-            </div>
 
-            <!-- Assigned To -->
-            <div class="mb-3">
-                <h4>Assigned To</h4>
-                <input type="text" name="Tassign" placeholder="Assignee" class="form-control" required>
-            </div>
-             <!-- TAT -->
-             <div class="mb-3">
-                <h4>TAT</h4>
-                <input type="date" name="tat"  class="form-control" required>
-            </div>
+                <!-- Task Priority -->
+                <div class="mb-3 form-check">
+                    <input type="checkbox" name="Priority0" class="form-check-input" id="priorityCheck">
+                    <label class="form-check-label" for="priorityCheck">High Priority</label>
+                </div>
 
-            <!-- Submit Button -->
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary mt-3">Submit Task</button>
-            </div>
-        </form>
-    </div>
-    </div>
+                <!-- Task Type -->
+                <div class="mb-3">
+                    <h4>Select Task Type</h4>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="Personal" id="personalTask">
+                        <label class="form-check-label" for="personalTask">Personal</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="Official" id="officialTask">
+                        <label class="form-check-label" for="officialTask">Official</label>
+                    </div>
+                </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-</body>
+                <!-- Assigned To -->
+                <div class="mb-3">
+                    <h4>Assign To</h4>
+                    <div class="assigned-to">
+                        <% if (Array.isArray(data.members)) { %>
+                            <% for (let dataa of data.members) { %>
+                                <div class="form-check">
+                                    <input type="radio" name="Tassign" value="<%= dataa.mobile %>" class="form-check-input" id="assign<%= dataa.mobile %>">
+                                    <label class="form-check-label" for="assign<%= dataa.mobile %>">
+                                        <%= dataa.name %>
+                                    </label>
+                                </div>
+                            <% } %>
+                        <% } else { %>
+                            <p>No members available</p>
+                        <% } %>
+                    </div>
+                </div>
+
+                <!-- TAT -->
+                <div class="mb-3">
+                    <h4>Task Deadline (TAT)</h4>
+                    <input type="date" name="tat" class="form-control" required>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-submit">Submit Task</button>

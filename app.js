@@ -66,9 +66,12 @@ app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.err = req.flash("err");
   res.locals.userinfo = req.user;
+  res.locals.loggedUser = req.user ? req.user.name : null; // Store user name
   // console.log(req.user)
   next();
 });
+
+
 
 // Body parser middleware (Express 4.16+ has this built-in)
 app.use(express.urlencoded({ extended: true }));  // No need for body-parser
@@ -76,7 +79,10 @@ app.use(express.urlencoded({ extended: true }));  // No need for body-parser
 // Connect to MongoDB
 async function main() {
   try {
-    await mongoose.connect('mongodb+srv://prateekgauravpr:VdIN6w1ND2CABhGy@cluster0.bhhdg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+    // await mongoose.connect('mongodb+srv://prateekgauravpr:VdIN6w1ND2CABhGy@cluster0.bhhdg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+    await mongoose.connect('mongodb://127.0.0.1:27017/test',
+    
+    {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       serverSelectionTimeoutMS: 30000
@@ -111,33 +117,125 @@ app.get("/register", (req, res,next) => {
 // Register a new user
 app.post("/register", async (req, res, next) => {
   const { mobile_no, name, email_id, username, password } = req.body;
+  // console.log(mobile_no)
+
+  let fetchdata = await user.find({"members.mobile" : mobile_no })
   
-  try {
-    // Check if the user already exists (email or username)
-    const existingUser = await user.findOne({ $or: [{ email_id }, { username }] });
-    if (existingUser) {
-      return res.status(400).send("User with this email or username already exists");
+  
+  if(fetchdata.length===0){
+    try {
+      // Check if the user already exists (email or username)
+      const existingUser = await user.findOne({ $or: [{ email_id }, { username }] });
+      if (existingUser) {
+        return res.status(400).send("User with this email or username already exists");
+      }
+  
+      // Create a new user
+      const newUser = new user({
+        name,
+        mobile_no,
+        email_id,
+        username,
+  
+        members : {
+          name : "Self",
+          mobile : mobile_no,
+        } 
+      });
+  
+      // Set the password using passport-local-mongoose's method
+      await newUser.setPassword(password);
+  
+      // Save the user
+      await newUser.save();
+      res.status(201).redirect("/home");  // Redirect after successful registration
+    } catch (err) {
+      console.error(err);
+      next(err);
     }
-
-    // Create a new user
-    const newUser = new user({
-      name,
-      mobile_no,
-      email_id,
-      username,
-    });
-
-    // Set the password using passport-local-mongoose's method
-    await newUser.setPassword(password);
-
-    // Save the user
-    await newUser.save();
-    res.status(201).redirect("/home");  // Redirect after successful registration
-  } catch (err) {
-    console.error(err);
-    next(err);
+  }else{
+    try {
+      // Check if the user already exists (email or username)
+      const existingUser = await user.findOne({ $or: [{ email_id }, { username }] });
+      if (existingUser) {
+        return res.status(400).send("User with this email or username already exists");
+      }
+  let tempdata = await user.find({"members.mobile" : mobile_no})
+      // Create a new user
+      console.log(`data ${tempdata} `)
+      console.log(tempdata.length)
+      for(let i=0; i<tempdata.length; i++){
+        
+        for(let j= 0; j<tempdata[i].members.length; j++){
+          let fetchdata2 = tempdata[i].members[j]
+          console.log(`before data ${fetchdata2}`)
+          console.log(`${fetchdata2.mobile} and ${mobile_no}`)// console.log(`fetched data moble ${fetchdata2.mobile}`)
+          if(String(fetchdata2.mobile) === String(mobile_no)){
+            console.log(`data fetched ${fetchdata2}`)
+            
+            const newUser = new user({
+              name,
+              mobile_no,
+              email_id,
+              username,
+              _id:  fetchdata2._id,
+        
+              members : {
+                name : "Self",
+                mobile : mobile_no,
+                id:  tempdata._id,
+              } 
+            });
+        
+            // Set the password using passport-local-mongoose's method
+            await newUser.setPassword(password);
+        console.log(newUser)
+            // Save the user
+            await newUser.save();
+            res.status(201).redirect("/home"); 
+          }else{
+            console.log("not fetched")
+          }
+        }
+      }
+   // Redirect after successful registration
+    } catch (err) {
+      console.error(err);
+      next(err);
+    }
   }
-});
+      
+  
+  
+
+
+  // for(i=0; i<members_data.length; i++){
+  //   if(members_data[i]=== mobile_no){
+  //     const newUser = new user({
+  //               name,
+  //               mobile_no,
+  //               email_id,
+  //               username,
+  //               _id:members_data._id[i],
+          
+  //               members : {
+  //                 name : "Self",
+  //                 mobile : mobile_no,
+  //               } 
+
+  //     })
+  //     console.log(newUser);
+  //    }else{console.log("wait for next")}
+  }
+
+
+
+//   if(members_data.length === 0){
+//     console.log("if cond true")
+
+  
+  
+);
 
 // Login route using passport
 app.post("/login", passport.authenticate('local', { 
@@ -147,43 +245,56 @@ app.post("/login", passport.authenticate('local', {
   res.redirect("/home") // Send a success message
 });
 
-app.get("/task",isloggedin, (req, res)=>{
-  
-  res.render("task_form.ejs")
+app.get("/task",isloggedin, async (req, res)=>{
+  let id = req.user._id
+  let data = await user.findById(id)
+  console.log(data)
+  res.render("task_form.ejs", {data})
 })
 
 app.post("/task",isloggedin, async(req, res)=>{
  let  { Tname,Tdesc,Personal,Tassign,tat } = req.body
  const userid = (req.user._id)
- const task1 = new task({
-  Task_Name:Tname,
-  Description: Tdesc,
-  Assigned_to: Tassign,
-  created_by : userid,
-  TAT : tat
- })
+ console.log(`this is before ${Tassign}`)
+
+ let fetch1 = await user.findOne({ mobile_no: Tassign });
+console.log(`this is after ${fetch1}`)
+
+ if(String(fetch1.mobile_no)  === Tassign){
+  console.log("matched")
+  const task1 = new task({
+    Task_Name:Tname,
+    Description: Tdesc,
+    Assigned_to: [{name : fetch1.name,
+    id: fetch1._id,}],
+    created_by : userid,
+    TAT : tat
+   }) 
+   task1.save();
+   res.redirect("/home")
+   console.log(task1)
   
- task1.save();
- res.redirect("/home")
-
-
+  
+ }else{console.log("not matched")}
+ 
 })
 
-app.get("/home",isloggedin, async (req, res) => {
- 
-    // Query to fetch tasks where Status is not 'Open' and created_by matches req.user._id
-    const taskData = await task.find({
-      created_by: req.user._id,
-      Status : "Open" ,
-    })
+app.get("/home", isloggedin, async (req, res) => {
+  try {
+      const taskData = await task.find({
+          "Assigned_to": { $elemMatch: { id: req.user._id } }, // Checks if any object in Assigned_to array has id = req.user._id
+          Status: "Open"
+      });
 
-    // console.log(taskData);  // This logs the task data for debugging
+      console.log("Fetched Tasks:", taskData); // Debugging output
 
-    // Render the home page and pass taskData to the view
-    res.render("home.ejs", { taskData });
-
-  
+      res.render("home.ejs", { taskData }); // Send tasks to frontend
+  } catch (err) {
+      console.error("Error fetching tasks:", err);
+      res.status(500).send("Internal Server Error");
+  }
 });
+
 
 app.post("/close/:id",isloggedin, async(req , res, next)=>{
 let {id}= req.params
@@ -201,21 +312,59 @@ let Updated_status = await task.findByIdAndUpdate(id, {Status : "Closed", commen
 res.redirect("/home")
 })
 
+app.get("/pending/task", async (req, res, next) => {
+  try {
+      let userId = req.user._id;
+      let data = await task.find({ created_by : req.user._id , Status : "Open", "Assigned_to.id" : {$ne: req.user._id }});
+      console.log(data); // Logs the fetched data
+
+
+      res.render("pendinglist.ejs", {data})
+  } catch (error) {
+      next(error); // Pass the error to Express error handler
+  }
+});
+
+
+
 
 app.get("/task/today", isloggedin, async(req, res)=>{
 
 const DayStart = moment().startOf('day').toDate();
 const Dayend = moment().endOf('day').toDate();
 
-  let pend_today = await task.find( {created_by : req.user._id, Status : "Open"  ,TAT : {$gte : DayStart, $lt: Dayend }})
-  res.render("Task_today.ejs", {pend_today})
+let pend_today = await task.find({
+  $or: [
+      { "Assigned_to": { $elemMatch: { id: req.user._id } } }, // Task assigned to the user
+      { created_by: req.user._id } // Task created by the user
+  ],
+  Status: "Open",
+  TAT: { $gte: DayStart, $lt: Dayend }
+});
+
+
+
+res.render("Task_today.ejs", { pend_today });
+
 })
 
-app.get("/All_closed" , isloggedin, async (req, res)=>{
-  let data_closed = await task.find({created_by : req.user._id, Status : "Closed"})
-  res.render("closed_task.ejs", {data_closed})
+app.get("/All_closed", isloggedin, async (req, res) => {
+  try {
+    let data_closed = await task.find({
+      $or: [
+        { "Assigned_to": { $elemMatch: { id: req.user._id } } }, // Task assigned to the user
+        { created_by: req.user._id } // Task created by the user
+      ],
+      Status: "Closed"
+    });
 
-})
+    res.render("closed_task.ejs", { data_closed });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 
 // Reopen the Closed Task
 app.post("/close/:id/reopen",isloggedin, async(req , res ,next)=>{
@@ -405,6 +554,37 @@ app.post("/listupdate/:id", async(req, res, next)=>{
   res.redirect(rout)
 })
 
+app.get("/fam/bers", asyncWrap( async(req,res,next)=>{
+  let userid = req.user._id
+  // console.log(userid)
+  let userdata = await user.findById(userid)
+  // console.log(userdata.members.length)
+res.render("member.ejs", {userdata})
+
+}))
+
+app.post("/add/members", async (req,res,next)=>{
+  let {member_name, mobile_no} = req.body
+  console.log(mobile_no, member_name)
+ let userdata = req.user._id
+for (let i=0; i<member_name.length; i++){
+  
+  let userd = {
+    name: member_name[i],
+    mobile:mobile_no[i]
+  }
+console.log(userd);
+  let data = await user.findByIdAndUpdate(
+    userdata,  // Ensure this is the correct user ID
+    { $push: { members: userd } }, 
+    { new: true }
+  );
+  let data3 = await user.findById(userdata)
+  console.log(data3)
+}
+res.redirect("/home")
+
+})
 
 
 

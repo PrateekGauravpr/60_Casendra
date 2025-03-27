@@ -21,9 +21,11 @@ const task_schema = new Schema({
             type: Boolean // fixed the typo (Boolean instead of Boolen)
         }
     },
-    Assigned_to: {
-        type: String // fixed the typo (String instead of Sting)
-    },
+    Assigned_to: [{
+        name : {type : String},
+        id : {type : String},
+        Creat_by : {type : String}
+    }],
     Created_at: {
         type: Date, // fixed the typo (Date instead of date)
         default: Date.now

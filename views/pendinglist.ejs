@@ -1,4 +1,5 @@
 <% layout("layout22/boilerplate.ejs") -%>
+
 <br>
 <style>
   /* Container for the task statistics box */
@@ -193,7 +194,7 @@
       </thead>
 
       <tbody>
-        <% for (let task of taskData) { 
+        <% for (let task of data) { 
             // Format Created At date
             let createdAtDate = new Date(task.Created_at);
             let TAT = new Date(task.tat);
