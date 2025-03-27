@@ -79,8 +79,8 @@ app.use(express.urlencoded({ extended: true }));  // No need for body-parser
 // Connect to MongoDB
 async function main() {
   try {
-    // await mongoose.connect('mongodb+srv://prateekgauravpr:VdIN6w1ND2CABhGy@cluster0.bhhdg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
-    await mongoose.connect('mongodb://127.0.0.1:27017/test',
+    await mongoose.connect('mongodb+srv://prateekgauravpr:VdIN6w1ND2CABhGy@cluster0.bhhdg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+    // await mongoose.connect('mongodb://127.0.0.1:27017/test',
     
     {
       useNewUrlParser: true,
